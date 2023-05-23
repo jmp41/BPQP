@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 import pandas as pd
 import qlib
-from qlib.config import REG_CN
+from qlib.config import REG_CN, REG_US
 from qlib.data import D
 from qlib.data.dataset.handler import DataHandlerLP
 from qlib.model.riskmodel import StructuredCovEstimator
@@ -36,7 +36,7 @@ data_handler_config = {
         {"class": "RobustZScoreNorm", "kwargs": {"fields_group": "feature", "clip_outlier": True}},
         {"class": "CSZFillna", "kwargs": {"fields_group": "feature"}},
     ],
-    "label": ["Ref($close, -1) / $close - 1"],
+    "label": ["Ref($close, -2)/Ref($close, -1) - 1"],
 }
 
 dataset_config = {
@@ -62,18 +62,19 @@ def get_daily_code(df):
 
 
 def robust_z_score(df):
-    return (df - df.mean()) / (0.0001 + df.std())
+    return (df - np.nanmean(df)) / (0.0001 + np.nanstd(df))
 
 
 def remove_ret_lim(df):
     loc = np.argwhere((df["label"].values.squeeze() < 0.099) & (df["label"].values.squeeze() > -0.099)).squeeze()
+
     return df.iloc[loc, :].fillna(method="ffill")
 
 
 def prepare_risk_data(
     df_index, region="CN", suffix="Train", T=240, start_time="2007-01-01", riskdata_root="./riskdata"
 ):
-    riskmodel = StructuredCovEstimator()
+    riskmodel = StructuredCovEstimator(scale_return = False)
     codes = df_index.groupby("datetime").apply(get_daily_code)
     ret_date = codes.index.values
     price_all = (
@@ -89,17 +90,14 @@ def prepare_risk_data(
         ref_date = price_all.index[i + cur_idx - T + 1]
         code = codes[i]
         price = price_all.loc[ref_date:date, code]
-        ret = price.pct_change()
+        ret = price.pct_change().dropna(how='all')
         ret.clip(ret.quantile(0.025), ret.quantile(0.975), axis=1, inplace=True)
 
-        if suffix == "Train":
-            ret = ret.groupby("datetime").apply(robust_z_score)
-
+        ret = ret.groupby("datetime").apply(robust_z_score)
         try:
             cov_estimated = riskmodel.predict(ret, is_price=False, return_decomposed_components=False)
-        except:
-            # In rare cases svd is singular, using history cov.
-            print("wrong")
+        except ValueError:
+            print('Extreme situations: zero or one tradeable stock')
             cov_estimated = ret.cov()
         root = riskdata_root + region + suffix + "/" + date.strftime("%Y%m%d")
         os.makedirs(root, exist_ok=True)
