@@ -1,5 +1,5 @@
 # BPQP
-The implementation of the paper: "An Efficient Differentiable Convex Optimization  Framework for End-to-End Learning in Decision Making" [TODO: arXiv Hyperlink]
+The implementation of the paper: "ABPQP: A Differentiable Convex Optimization Framework for Efficient End-to-End Learning" [TODO: arXiv Hyperlink]
 
 ![avatar](frame.png) 
 
@@ -28,7 +28,7 @@ python papare_dataset.py
 
 # Reproduce our COFFE framework for end-to-end portfolio optimization
 ```
-python main.py --market CN --loss huber_loss --predictor mlp --solver bpqp
+python main.py --market CN --loss e2e --predictor mlp --solver bpqp
 ```
 
 # Reproduce benchmark
@@ -36,10 +36,7 @@ python main.py --market CN --loss huber_loss --predictor mlp --solver bpqp
 ```
 python main.py --market CN --loss mse --predictor mlp --solver bpqp
 ```
-* Naive NN
-```
-python main.py --market=CN --loss=huber_loss --predictor=mlp --solver=naive_nn  
-```
+
 * DC3
 ```
 python main.py --market=CN --loss=huber_loss --predictor=mlp --solver=dc3  
