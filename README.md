@@ -1,11 +1,10 @@
 # BPQP
-The implementation of the paper: "ABPQP: A Differentiable Convex Optimization Framework for Efficient End-to-End Learning" [TODO: arXiv Hyperlink]
+The implementation of the paper: "BPQP: A Differentiable Convex Optimization Framework for Efficient End-to-End Learning" [TODO: arXiv Hyperlink]
 
 ![avatar](frame.png) 
 
 # Data & Environment
 * Install python3.7, 3.8 or 3.9.
-* Install Pytorch(1.12.0 in our experiment)
 * Install the requirements in [requirements.txt](requirements.txt).
 * Install the quantitative investment platform Qlib and download the data from Qlib:
 ```
@@ -24,10 +23,14 @@ python papare_dataset.py
 # Reproduce our BPQP in large-scale QPs and LPs experiment
 
 ![avatar](speed.png) 
+
 [Large scale QPs and LPs experiment.ipynb](Large scale QPs and LPs experiment.ipynb)
 
+# Reproduce our BPQP for SOCP experiment
 
-# Reproduce our COFFE framework for end-to-end portfolio optimization
+[SOCP_exp.ipynb](SOCP_exp.ipynb)
+
+# Reproduce our BPQP for end-to-end portfolio optimization
 ```
 python main.py --market CN --loss e2e --predictor mlp --solver bpqp
 ```
@@ -40,14 +43,5 @@ python main.py --market CN --loss mse --predictor mlp --solver bpqp
 
 * DC3
 ```
-python main.py --market=CN --loss=huber_loss --predictor=mlp --solver=dc3  
+python main.py --market CN --loss e2e --predictor mlp --solver dc3  
 ```
-
-# About the  analysis & results
-The results are located in the directory [./analysis/](./analysis/). They are named after the corresponding table or figure name in the paper.
-
-For example, if you want to obtain the results of Table 1.
-- The dependent data is located in.  [./analysis/data/Table1/](./analysis/data/Table1/)
-- The scripts that are dependent on generating the results will be [./analysis/Table1.py](./analysis/Table1.py).
-
-Similarly, for the rest.
