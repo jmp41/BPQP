@@ -41,3 +41,12 @@ python main.py --market CN --loss mse --predictor mlp --solver bpqp
 ```
 python main.py --market=CN --loss=huber_loss --predictor=mlp --solver=dc3  
 ```
+
+# About the  analysis & results
+The results are located in the directory [./analysis/](./analysis/). They are named after the corresponding table or figure name in the paper.
+
+For example, if you want to obtain the results of Table 1.
+- The dependent data is located in.  [./analysis/data/Table1/](./analysis/data/Table1/)
+- The scripts that are dependent on generating the results will be [./analysis/Table1.py](./analysis/Table1.py).
+
+Similarly, for the rest.
