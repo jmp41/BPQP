@@ -1,4 +1,4 @@
-torch~=1.12.0+cu116
+torch
 cvxpy~=1.2.1
 tqdm~=4.64.0
 pandas~=1.3.5

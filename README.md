@@ -5,6 +5,7 @@ The implementation of the paper: "BPQP: A Differentiable Convex Optimization Fra
 
 # Data & Environment
 * Install python3.7, 3.8 or 3.9.
+* Install Pytorch(1.12.0 in our experiment)
 * Install the requirements in [requirements.txt](requirements.txt).
 * Install the quantitative investment platform Qlib and download the data from Qlib:
 ```
