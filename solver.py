@@ -6,7 +6,7 @@ import numpy as np
 import osqp
 import torch
 import torch.nn.functional as F
-from qpth.qp import QPFunction
+import qpth.qp import QPFunction
 from scipy import sparse
 from torch import nn
 from torch.autograd import Function
